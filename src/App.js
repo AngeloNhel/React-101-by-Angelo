@@ -5,6 +5,7 @@ import Header from './Header';
 import Button from 'react-bootstrap/Button';
 import StudentInfo from './StudentInfo';
 import Invoice from './Invoice';
+import TicTacToe from './TicTacToe';
 
 
 const students = [
@@ -54,11 +55,57 @@ const students = [
 
   const studentList = students.map((item) => <li>{item}</li>);
   
+  const vehicles = ['mustang','f-150','expedition'];
+  const [car,truck,suv] = vehicles;
+
+  const [inv1,,,,inv5] = invoiceItems;
+
+  const numberSet1 = [23,34,56,34,51,8,11,43];
+  const numberSet2 = [28,34,56,34,51,8,11,48];
+
+  let combinedNumberSet = [...numberSet1, ...numberSet2];
+
+  let [first, second, third, ...remaining] = numberSet1;
+  let [line1,line2, ...restLine] = invoiceItems;
+
+  let locked=1;
+  //if(locked!=1){return "true";}else{return "false";}
+  let canChange = locked !== 1 ? 'true':'false';
+
+  let speed = 60;
+  // if(speed >= 120){return "to fast";} elseif (speed >= 80){return "fast";} else{return "ok";}
+  let message = speed >= 120? 'too fast' : speed >= 80? 'fast' : 'OK';
+
 function App() {
   return (
     <div className="App">
 
       <Header menuList={menus}/>
+
+      <TicTacToe/>
+
+        <div>{car}</div>
+        <div>{truck}</div>
+        <div>{suv}</div>
+
+        <div>{inv1.description}</div>
+        <div>{inv5.description}</div>
+
+        <div>{combinedNumberSet.join(",")}</div>
+
+        <div>{first}</div>
+        <div>{second}</div>
+        <div>{third}</div>
+        <div>{remaining.join("|")}</div>
+
+        <div>{line1.description}</div>
+        <div>{line2.description}</div>
+        <div>{restLine.length}</div>
+
+        <div>{canChange}</div>
+        <div>{locked !== 0 ? 'true':'false'}</div>
+
+        <div>{message}</div>
 
         <div className="main-content container">
          <h1>Header Section</h1>

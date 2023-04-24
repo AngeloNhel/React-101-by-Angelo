@@ -43,3 +43,8 @@
 .withMove{
   background-color: darkgray;
 }
+ 
+.buttons {
+  margin-left: 10px;
+  margin-right: 10px;
+}

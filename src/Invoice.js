@@ -1,15 +1,34 @@
+
+import { useState } from "react";
 import DateUtils from "./DateUtils";
 
-function Invoice({details, lines}){
+// function Invoice({details, lines}){
+
+    function Invoice({details}){
 
     const {invoiceTo, date, address1, address2, invoiceNumber, paymentMode} = details;
+    
+    const [rows, setRows] = useState([
+      { description: '', quantity: 0, unitPrice: 0, total: 0 },
+    ]);
+  
+    const handleInputChange = (event, index) => {
+      const { name, value } = event.target;
+      const rowsCopy = [...rows];
+      rowsCopy[index][name] = value;
+      setRows(rowsCopy);
+    };
 
-    let totalAmount = 0;
-    const computeAmount = (item)=>{
-        let amount = item.Qty * item.unitPrice;
-        totalAmount += amount;
-        return amount;
-    }
+    const handleAddRow = () => {
+        const newRow = { description: '', quantity: 0, unitPrice: 0, total: 0 };
+        setRows([...rows, newRow]);
+      };
+    
+      const handleRemoveRow = (index) => {
+        const rowsCopy = [...rows];
+        rowsCopy.splice(index, 1);
+        setRows(rowsCopy);
+      };
 
     return (
         <>
@@ -39,36 +58,74 @@ function Invoice({details, lines}){
                         </div> 
                     </div>
 
-                    <div className="table-responsive mt-3">
+                    
+                    <div className="table-responsive mt-3">  
                         <table className="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Description </th>
-                                    <th>Qty</th>
-                                    <th>Unit Price</th>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {lines.map((item)=>{ 
-                                return (<tr>
-                                    <td>{item.description}</td>
-                                    <td className="numeric">{item.Qty}</td>
-                                    <td className="numeric">{item.unitPrice.toFixed(2)}</td>
-                                    <td className="numeric">{computeAmount(item).toFixed(2)}</td>
-                                </tr>)
-                                })}
-                                <tr>
-                                    <td colSpan={3}>Total</td>
-                                    <td className="numeric">{totalAmount.toFixed(2)}</td>
-                                </tr>
-                            </tbody>
+                        <thead>
+                            <tr>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows.map((row, index) => (
+                            <tr key={index}>
+                                <td>
+                                <input
+                                    type="text"
+                                    name="description"
+                                    value={row.description}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                />
+                                </td>
+                                <td>
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    value={row.quantity}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                />
+                                </td>
+                                <td>
+                                <input
+                                    type="number"
+                                    name="unitPrice"
+                                    value={row.unitPrice}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                />
+                                </td>
+                                <td><input value={row.quantity * row.unitPrice}/></td>
+                                <td>
+                                <button className="btn btn-primary" onClick={() => handleRemoveRow(index)}>Remove</button>
+                                </td>
+                            </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                            <td colSpan="3">
+                                <button className="btn btn-primary" onClick={handleAddRow}>Add Row</button>
+                            </td>
+                            <td>
+                                <div>
+                                {rows.reduce(
+                                    (total, row) => total + row.quantity * row.unitPrice,
+                                    0
+                                )}
+                                </div>
+                            </td>
+                            <td></td>
+                            </tr>
+                        </tfoot>
                         </table>
-                    </div>
+                    </div> 
+
+                    
                 </div>
             </div>
         </>
     );
 }
-
 export default Invoice;

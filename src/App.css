@@ -48,3 +48,11 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+.rowButton {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+.row{
+  text-align: left;
+  margin: 10px;
+}

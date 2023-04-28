@@ -2,16 +2,24 @@
 import { useState } from "react";
 import DateUtils from "./DateUtils";
 
-// function Invoice({details, lines}){
+
 
     function Invoice({details}){
 
     const {invoiceTo, date, address1, address2, invoiceNumber, paymentMode} = details;
     
+
     const [rows, setRows] = useState([
-      { description: '', quantity: 0, unitPrice: 0, total: 0 },
+        {description: "Mouse", quantity: 3, unitPrice: 200}, 
+        {description: "Keyboard", quantity: 3, unitPrice: 400},
+        {description: "Monitor", quantity: 6, unitPrice: 5400},
+        {description: "CPU Tower Case", quantity: 3, unitPrice: 1200},
+        {description: "Headset", quantity: 3, unitPrice: 500},
+        {description: "UPS", quantity: 1, unitPrice: 4000},
     ]);
+    
   
+
     const handleInputChange = (event, index) => {
       const { name, value } = event.target;
       const rowsCopy = [...rows];
@@ -20,15 +28,19 @@ import DateUtils from "./DateUtils";
     };
 
     const handleAddRow = () => {
-        const newRow = { description: '', quantity: 0, unitPrice: 0, total: 0 };
+        const newRow = { description: '', quantity: '', unitPrice: '', total: ''};
         setRows([...rows, newRow]);
       };
     
       const handleRemoveRow = (index) => {
         const rowsCopy = [...rows];
         rowsCopy.splice(index, 1);
-        setRows(rowsCopy);
+        setRows(rowsCopy); 
       };
+
+      const handleSubmit = () => {
+        console.log(rows);
+      }
 
     return (
         <>
@@ -38,25 +50,33 @@ import DateUtils from "./DateUtils";
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-sm-8">
-                            <label className="field-label">Invoice To:</label>
-                            <label>{invoiceTo}</label>
+                        <div className="col-md-3">
+                            <label className="field-label">Invoice To: </label>
                         </div>
-                        <div className="col-sm-4">
+                        <div className="col-md-3">
+                            <input type="text" value={invoiceTo}/>
+                        </div>
+                        <div className="col-md-3">
                             <label className="field-label">Date:</label>
-                            <label>{DateUtils(new Date(date), 'dd/mm/yyyy')}</label>
                         </div>
-                    </div>                 
+                        <div className="col-md-3">
+                            <input type="date" value={DateUtils(new Date(date), 'dd/mm/yyyy')}/>
+                        </div>
+                    </div>       
                     <div className="row">
-                        <div className="col-sm-8">
+                        <div className="col-md-3">
                             <label className="field-label">Address: </label>
-                            <label>{address1 +", " + address2} </label>
-                        </div>                
-                        <div className="col-sm-4">
+                        </div>
+                        <div className="col-md-3">
+                            <input type="textarea" value={address1 +", " + address2}/>
+                        </div>
+                        <div className="col-md-3">
                             <label className="field-label">Payment Mode:</label>
-                            <label>{paymentMode} </label>
-                        </div> 
-                    </div>
+                        </div>
+                        <div className="col-md-3">
+                            <input type="text" value={paymentMode} />
+                        </div>
+                    </div>  
 
                     
                     <div className="table-responsive mt-3">  
@@ -73,32 +93,18 @@ import DateUtils from "./DateUtils";
                             {rows.map((row, index) => (
                             <tr key={index}>
                                 <td>
-                                <input
-                                    type="text"
-                                    name="description"
-                                    value={row.description}
-                                    onChange={(event) => handleInputChange(event, index)}
-                                />
+                                    <input type="text" name="description" value={row.description} onChange={(event) => handleInputChange(event, index)}/>
                                 </td>
                                 <td>
-                                <input
-                                    type="number"
-                                    name="quantity"
-                                    value={row.quantity}
-                                    onChange={(event) => handleInputChange(event, index)}
-                                />
+                                    <input type="number" name="quantity" value={row.quantity} onChange={(event) => handleInputChange(event, index)}/>
                                 </td>
                                 <td>
-                                <input
-                                    type="number"
-                                    name="unitPrice"
-                                    value={row.unitPrice}
-                                    onChange={(event) => handleInputChange(event, index)}
-                                />
+                                    <input type="number" name="unitPrice" value={row.unitPrice} onChange={(event) => handleInputChange(event, index)}/>
                                 </td>
-                                <td><input value={row.quantity * row.unitPrice}/></td>
                                 <td>
-                                <button className="btn btn-primary" onClick={() => handleRemoveRow(index)}>Remove</button>
+                                    <input value={(row.quantity * row.unitPrice).toFixed(2)}/></td>
+                                <td>
+                                    <button className="btn btn-danger" onClick={() => handleRemoveRow(index)}>Remove</button>
                                 </td>
                             </tr>
                             ))}
@@ -106,22 +112,20 @@ import DateUtils from "./DateUtils";
                         <tfoot>
                             <tr>
                             <td colSpan="3">
-                                <button className="btn btn-primary" onClick={handleAddRow}>Add Row</button>
+                                <button className="rowButton btn btn-success" onClick={handleAddRow}>Add Row</button>
+                                <button className="rowButton btn btn-primary " onClick={handleSubmit}>Submit</button>
                             </td>
                             <td>
                                 <div>
-                                {rows.reduce(
-                                    (total, row) => total + row.quantity * row.unitPrice,
-                                    0
-                                )}
+                                {rows.reduce((total, row) => total + row.quantity * row.unitPrice,0).toFixed(2)}
                                 </div>
                             </td>
-                            <td></td>
                             </tr>
                         </tfoot>
                         </table>
                     </div> 
 
+                     
                     
                 </div>
             </div>

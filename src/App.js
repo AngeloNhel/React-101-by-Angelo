@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
@@ -6,6 +7,10 @@ import Button from 'react-bootstrap/Button';
 import StudentInfo from './StudentInfo';
 import Invoice from './Invoice';
 import TicTacToe from './TicTacToe';
+import EmployeesList from './employeesList';
+
+
+
 
 
 
@@ -82,7 +87,9 @@ function App() {
     <div className="App">
 
       <Header menuList={menus}/>
-
+      
+      <EmployeesList/>
+     
       <TicTacToe/>
 
         <div>{car}</div>
